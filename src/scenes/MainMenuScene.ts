@@ -1,7 +1,7 @@
 export class MainMenuScene extends Phaser.Scene {
 
-    gameTitle;
-    gamePrompt;
+    gameTitle:Phaser.GameObjects.Text;
+    gamePrompt:Phaser.GameObjects.Text;
 
     titlePosition = new Phaser.Math.Vector2();
     xSpeed = 1.5;

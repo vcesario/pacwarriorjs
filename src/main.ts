@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { MainMenuScene } from "./scenes/mainMenuScene";
+import { MainMenuScene } from "./scenes/MainMenuScene";
 
 const gameConfig = {
     type: Phaser.AUTO,
