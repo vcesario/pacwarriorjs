@@ -1,42 +1,82 @@
+import { InputActions, InputPhases, InputState } from "./InputState";
+
 export class MapScene extends Phaser.Scene {
 
     player: Phaser.GameObjects.Rectangle;
+
+    inputState: InputState;
+
+    moveAxis: Phaser.Math.Vector2;
+    playerVelocity: Phaser.Math.Vector2;
+    playerSpeed: number;
 
     constructor() {
         super("MapScene");
     }
 
+    preload() {
+        // this.scene.launch("InputState");
+        this.inputState = this.scene.get("InputState") as InputState;
+    }
+
     create() {
         this.player = this.add.rectangle(0, 0, 16, 16, 0xFF0000);
-
-        let keyW = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyW?.addListener("down", this.onActionMoveUpStarted, this);
-        let keyA = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyA?.addListener("down", this.onActionMoveLeftStarted, this);
-        let keyS = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keyS?.addListener("down", this.onActionMoveDownStarted, this);
-        let keyD = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyD?.addListener("down", this.onActionMoveRightStarted, this);
+        this.moveAxis = new Phaser.Math.Vector2(0, 0);
+        this.playerVelocity = new Phaser.Math.Vector2(0, 0);
+        this.playerSpeed = 1.5;
+        this.inputState.addListener(this.onActionsUpdated);
     }
 
     update() {
-
+        let pos = this.player.getCenter();
+        this.player.setPosition(pos.x + this.playerVelocity.x, pos.y + this.playerVelocity.y);
     }
 
-    onActionMoveUpStarted() {
-        this.player.y -= 5;
-    }
-    
-    onActionMoveDownStarted() {
-        this.player.y += 5;
-    }
+    private onActionsUpdated = (action: InputActions, phase: InputPhases) => {
+        let moved = false;
 
-    onActionMoveLeftStarted() {
-        this.player.x -= 5;
-    }
+        if (action == InputActions.MoveDown) {
+            if (phase == InputPhases.Started) {
+                this.moveAxis.y += 1;
+            }
+            else {
+                this.moveAxis.y -= 1;
+            }
+            moved = true;
+        }
+        else if (action == InputActions.MoveUp) {
+            if (phase == InputPhases.Started) {
+                this.moveAxis.y -= 1;
+            }
+            else {
+                this.moveAxis.y += 1;
+            }
+            moved = true;
+        }
+        else if (action == InputActions.MoveLeft) {
+            if (phase == InputPhases.Started) {
+                this.moveAxis.x -= 1;
+            }
+            else {
+                this.moveAxis.x += 1;
+            }
+            moved = true;
+        }
+        else if (action == InputActions.MoveRight) {
+            if (phase == InputPhases.Started) {
+                this.moveAxis.x += 1;
+            }
+            else {
+                this.moveAxis.x -= 1;
+            }
+            moved = true;
+        }
 
-    onActionMoveRightStarted() {
-        this.player.x += 5;
+        if (moved) {
+            this.playerVelocity = this.moveAxis.clone();
+            this.playerVelocity.normalize();
+            this.playerVelocity.scale(this.playerSpeed);
+        }
     }
 
 }

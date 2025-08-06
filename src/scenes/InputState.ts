@@ -28,6 +28,22 @@ export class InputState extends Phaser.Scene {
         var keySpace = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keySpace?.addListener("down", () => this.setActionStarted(InputActions.Confirm), this);
         keySpace?.addListener("up", () => this.setActionEnded(InputActions.Confirm), this);
+
+        var keyS = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyS?.addListener("down", () => this.setActionStarted(InputActions.MoveDown), this);
+        keyS?.addListener("up", () => this.setActionEnded(InputActions.MoveDown), this);
+
+        var keyW = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyW?.addListener("down", () => this.setActionStarted(InputActions.MoveUp), this);
+        keyW?.addListener("up", () => this.setActionEnded(InputActions.MoveUp), this);
+
+        var keyA = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyA?.addListener("down", () => this.setActionStarted(InputActions.MoveLeft), this);
+        keyA?.addListener("up", () => this.setActionEnded(InputActions.MoveLeft), this);
+
+        var keyD = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyD?.addListener("down", () => this.setActionStarted(InputActions.MoveRight), this);
+        keyD?.addListener("up", () => this.setActionEnded(InputActions.MoveRight), this);
     }
 
     update() {
