@@ -1,0 +1,6 @@
+[x] load tileset
+[x] load map
+[] load player character sprite
+[] player x map collision
+[] spawn enemy
+[] enemy overseer behavior

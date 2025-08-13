@@ -10,6 +10,8 @@ export class MapScene extends Phaser.Scene {
     playerVelocity: Phaser.Math.Vector2;
     playerSpeed: number;
 
+    map: Phaser.Tilemaps.Tilemap;
+
     constructor() {
         super("MapScene");
     }
@@ -17,9 +19,19 @@ export class MapScene extends Phaser.Scene {
     preload() {
         // this.scene.launch("InputState");
         this.inputState = this.scene.get("InputState") as InputState;
+
+        this.load.image("set", "..\\..\\assets\\images\\tilemap_packed.png");
+        this.load.tilemapTiledJSON("tilemap", "..\\..\\assets\\maps\\map.tmj");
     }
 
     create() {
+        this.map = this.make.tilemap({ key: "tilemap", tileWidth: 16, tileHeight: 16 });
+        const tileswet = this.map.addTilesetImage("set");
+        if (!tileswet) {
+            return;
+        }
+        this.map.createLayer(0, tileswet, 0, 0);
+
         this.player = this.add.rectangle(0, 0, 16, 16, 0xFF0000);
         this.moveAxis = new Phaser.Math.Vector2(0, 0);
         this.playerVelocity = new Phaser.Math.Vector2(0, 0);
